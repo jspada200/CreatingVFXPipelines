@@ -1,4 +1,4 @@
-from ..application_handler import ApplicationHandler
+from JPipe.application_handler import ApplicationHandler
 import maya.cmds as cmds
 
 
@@ -9,7 +9,8 @@ class MayaHandler(ApplicationHandler):
         Returns a list of all files used in the current Maya scene.
         """
         used_files = []
-        file_types = ["file", "texture"]
+        file_types = ["file"]
+        print(dir(cmds))
         for file_type in file_types:
             nodes = cmds.ls(type=file_type)
             for node in nodes:
