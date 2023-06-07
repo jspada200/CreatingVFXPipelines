@@ -18,3 +18,7 @@ class MayaHandler(ApplicationHandler):
                 if file_path:
                     used_files.append(file_path)
         return used_files
+
+    def open_scene(self, file_path: str):
+        """Open the provided scene file."""
+        cmds.file(file_path, open=True)

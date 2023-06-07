@@ -1,4 +1,4 @@
-import JPipe.base
+from JPipe import base
 import json
 
 
@@ -9,7 +9,7 @@ def _get_class(class_path: str):
     return getattr(module, class_name)
 
 
-class SettingsResolver(JPipe.base.JPipeBase):
+class SettingsResolver(base.JPipeBase):
     """
     Resolves settings and imports libraries that are needed.
     """
@@ -39,14 +39,14 @@ class SettingsResolver(JPipe.base.JPipeBase):
     def application_handler(self):
         """Returns the application handler class."""
         if not self._application_handler:
-            self._application_handler = _get_class(self._settings['application_handler'])
+            self._application_handler = _get_class(self._settings['application_handler'])()
         return self._application_handler
 
     @property
     def disk_handler(self):
         """Returns the disk handler class."""
         if not self._disk_handler:
-            self._disk_handler = _get_class(self._settings['disk_handler'])
+            self._disk_handler = _get_class(self._settings['disk_handler'])()
         return self._disk_handler
 
     def get_validators(self, application: str):
