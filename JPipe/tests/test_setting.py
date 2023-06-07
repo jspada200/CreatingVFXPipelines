@@ -13,15 +13,17 @@ class SettingsResolverTestCase(unittest.TestCase):
     def setUp(self):
         self.settings_file_path = "path/to/settings.json"
         self.settings = {
-            "application_handler": "JPipe.application_handler.ApplicationHandler",
+            "application_handler": {
+                "default": "JPipe.application_handler.ApplicationHandler",
+            },
             "disk_handler": "JPipe.disk_handler.DiskHandler",
             "validators": {
-                "my_app": [
+                "default": [
                     "JPipe.validator_base.ValidatorBase",
                 ]
             },
             "hooks": {
-                "my_app": [
+                "default": [
                     "JPipe.validator_base.ValidatorBase",
                 ]
             },
@@ -29,11 +31,11 @@ class SettingsResolverTestCase(unittest.TestCase):
         with mock.patch(
             "builtins.open", mock.mock_open(read_data=json.dumps(self.settings))
         ) as mock_file:
-            self.resolver = SettingsResolver(self.settings_file_path)
+            self.resolver = SettingsResolver(self.settings_file_path, "default")
 
     def test_init_loads_settings_from_file(self):
         with mock.patch("builtins.open", mock.mock_open(read_data="{}")) as mock_file:
-            resolver = SettingsResolver(self.settings_file_path)
+            resolver = SettingsResolver(self.settings_file_path, "default")
             mock_file.assert_called_once_with(self.settings_file_path, "r")
 
     def test_validate_with_valid_settings(self):
@@ -46,7 +48,7 @@ class SettingsResolverTestCase(unittest.TestCase):
         with mock.patch(
             "builtins.open", mock.mock_open(read_data=json.dumps(invalid_settings))
         ) as mock_file:
-            resolver = SettingsResolver(self.settings_file_path)
+            resolver = SettingsResolver(self.settings_file_path, "default")
 
         assert resolver._settings == invalid_settings
         with pytest.raises(KeyError):
@@ -62,7 +64,7 @@ class SettingsResolverTestCase(unittest.TestCase):
         with mock.patch("JPipe.settings._get_class") as mock_get_class:
             result1 = self.resolver.application_handler
             result2 = self.resolver.application_handler
-            mock_get_class.assert_called_once_with(self.settings["application_handler"])
+            mock_get_class.assert_called_once_with(self.settings["application_handler"]["default"])
             self.assertEqual(result1, result2)
 
     def test_disk_handler_returns_correct_class(self):
@@ -80,22 +82,26 @@ class SettingsResolverTestCase(unittest.TestCase):
 
     def test_get_validators_returns_list_of_classes(self):
         self.resolver._settings = self.settings
-        result = self.resolver.get_validators("my_app")
+        result = self.resolver.get_validators()
         expected = [ValidatorBase]
         self.assertEqual(result, expected)
 
     def test_get_validators_returns_empty_list_for_missing_application(self):
         self.resolver._settings = self.settings
-        result = self.resolver.get_validators("unknown_app")
+        self.resolver._application = "unknown_app"
+        result = self.resolver.get_validators()
         self.assertEqual(result, [])
+        self.resolver._application = "default"
 
     def test_get_hooks_returns_list_of_classes(self):
         self.resolver._settings = self.settings
-        result = self.resolver.get_hooks("my_app")
+        result = self.resolver.get_hooks()
         expected = [ValidatorBase]
         self.assertEqual(result, expected)
 
     def test_get_hooks_returns_empty_list_for_missing_application(self):
         self.resolver._settings = self.settings
-        result = self.resolver.get_hooks("unknown_app")
+        self.resolver._application = "unknown_app"
+        result = self.resolver.get_hooks()
         self.assertEqual(result, [])
+        self.resolver._application = "default"
