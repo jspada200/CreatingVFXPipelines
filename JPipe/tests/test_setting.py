@@ -55,7 +55,7 @@ class SettingsResolverTestCase(unittest.TestCase):
     def test_application_handler_returns_correct_class(self):
         self.resolver._settings = self.settings
         result = self.resolver.application_handler
-        self.assertEqual(result, ApplicationHandler)
+        self.assertEqual(type(result), ApplicationHandler)
 
     def test_application_handler_caches_class(self):
         self.resolver._settings = self.settings
@@ -68,7 +68,7 @@ class SettingsResolverTestCase(unittest.TestCase):
     def test_disk_handler_returns_correct_class(self):
         self.resolver._settings = self.settings
         result = self.resolver.disk_handler
-        self.assertEqual(result, DiskHandler)
+        self.assertEqual(type(result), DiskHandler)
 
     def test_disk_handler_caches_class(self):
         self.resolver._settings = self.settings
