@@ -9,6 +9,7 @@ class ValidatorBase(JPipeBase):
     """
     Base class for all validators.
     """
+    display_name = "ValidatorBase"
 
     def __init__(self, application_handler: ApplicationHandler, disk_handler: DiskHandler):
         super().__init__()

@@ -10,7 +10,6 @@ class MayaHandler(ApplicationHandler):
         """
         used_files = []
         file_types = ["file"]
-        print(dir(cmds))
         for file_type in file_types:
             nodes = cmds.ls(type=file_type)
             for node in nodes:

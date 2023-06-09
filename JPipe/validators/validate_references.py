@@ -4,6 +4,7 @@ class ValidateReferences(ValidatorBase):
     """
     Validate that all links in the application are valid.
     """
+    display_name = "References"
 
     def validate(self):
         """

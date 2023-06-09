@@ -1,5 +1,9 @@
-from JPipe.checkin_controller import CheckinController
+import os.path
 
+from JPipe.checkin_controller import CheckinController
+from colorama import init
+from colorama import Fore, Back, Style
+init()
 
 class CommandLineCheckin(CheckinController):
     def __init__(self,
@@ -19,11 +23,40 @@ class CommandLineCheckin(CheckinController):
         This includes and hooks or validations that need to occur.
         :return:
         """
-        self.application_controller.open_scene(self.scene_file_path)
+        print(f"Starting checkin of {os.path.basename(self.scene_file_path)}...")
+
+        try:
+            self.application_controller.open_scene(self.scene_file_path)
+        except Exception as e:
+            print(Fore.RED + f"Failed to open scene {os.path.basename(self.scene_file_path)}.")
+            print(Fore.LIGHTRED_EX + str(e))
+            return False
+
+        print("Starting Validation...")
         success, failed = self.validate()
 
         if not self.force and failed:
-            print(f"Validation failed. Not checking in.")
+            print(Fore.RED + f"Validation failed. Not checking in.")
             return False
+        elif failed:
+            print(Fore.YELLOW + f"Validation failed, but force flag is set. Checking in anyway.")
+        else:
+            print(Fore.GREEN + f"Validation passed. Checking in.")
 
-new_control = CommandLineCheckin(r"C:\Users\tex18\PycharmProjects\CreatingVFXPipelines\JPipe\example_settings.json", "maya", "C:/Users/tyler/Desktop/test.ma")
+    def validate(self) -> tuple[list, list]:
+        """
+        Validate the provided scene file. At this point the scene should be open.
+        :return: List of Successful and failed Validations.
+        """
+        success, failed = [], []
+        print(Style.RESET_ALL)
+        for validation in self.settings.get_validators():
+            result, message = validation.validate()
+            if result:
+                success.append(validation)
+                print(Fore.LIGHTGREEN_EX +f"{validation.display_name} Validation passed.")
+            else:
+                failed.append(validation)
+                print(Fore.RED + f"{validation.display_name} Validation failed: {message}")
+        print(Style.RESET_ALL)
+        return success, failed

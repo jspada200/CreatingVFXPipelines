@@ -59,7 +59,7 @@ class SettingsResolver(base.JPipeBase):
         """
         validators = []
         for validator in self._settings['validators'].get(self._application, []):
-            validators.append(_get_class(validator))
+            validators.append(_get_class(validator)(self.application_handler, self.disk_handler))
         return validators
 
     def get_hooks(self):
