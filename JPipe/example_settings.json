@@ -1,13 +1,15 @@
 {
-            "application_handler": "JPipe.application_handlers.maya_handler.MayaHandler",
+            "application_handler": {
+              "maya": "JPipe.application_handlers.maya_handler.MayaHandler"
+            },
             "disk_handler": "JPipe.disk_handler.DiskHandler",
             "validators": {
-                "my_app": [
+                "maya": [
                     "JPipe.validator_base.ValidatorBase"
                 ]
             },
             "hooks": {
-                "my_app": [
+                "maya": [
                     "JPipe.validator_base.ValidatorBase"
                 ]
             }

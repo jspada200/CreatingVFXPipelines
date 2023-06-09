@@ -6,7 +6,7 @@ class CheckinController:
     
     def __init__(self, settings_file: str, application: str):
         """Instantiate all the necessary objects given the provided settings."""
-        self.settings = SettingsResolver(settings_file)
+        self.settings = SettingsResolver(settings_file, application)
         self.application = application
 
         self.application_controller = self.settings.application_handler
