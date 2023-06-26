@@ -2,7 +2,7 @@
     "application_handler": {
       "maya": "JPipe.application_handlers.maya_handler.MayaHandler"
     },
-    "disk_handler": "JPipe.disk_handler.DiskHandler",
+    "disk_handler": "JPipe.disk_handlers.local_disk.LocalDiskHandler",
     "validators": {
         "maya": [
             "JPipe.validators.validate_references.ValidateReferences"
@@ -10,6 +10,7 @@
     },
     "hooks": {
         "maya": [
-        ]
+            "JPipe.hooks.generate_playblasts.GeneratePlayblasts"
+            ]
     }
 }

@@ -5,7 +5,7 @@ import maya.standalone
 maya.standalone.initialize()
 
 import argparse
-from JPipe.command_line_checkin import CommandLineCheckin
+from JPipe.checkin_controllers.command_line_checkin import CommandLineCheckin
 
 parser = argparse.ArgumentParser(description="Check in a maya file from commandline.")
 parser.add_argument("scene_file", help="Path to the scene file.")
