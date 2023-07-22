@@ -1,7 +1,7 @@
 from .base import JPipeBase
 
 
-class DiskHandler(JPipeBase):
+class DiskProvider(JPipeBase):
     """Handles all operations related to the file system."""
 
     def file_exists(self, file_path: str) -> bool:

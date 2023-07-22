@@ -1,8 +1,8 @@
 {
     "application_handler": {
-      "maya": "JPipe.application_handlers.maya_handler.MayaHandler"
+      "maya": "JPipe.application_providers.maya_provider.MayaProvider"
     },
-    "disk_handler": "JPipe.disk_handlers.local_disk.LocalDiskHandler",
+    "disk_handler": "JPipe.disk_providers.local_disk.LocalDiskProvider",
     "validators": {
         "maya": [
             "JPipe.validators.validate_references.ValidateReferences"

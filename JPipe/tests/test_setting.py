@@ -5,18 +5,18 @@ from unittest import mock
 import pytest
 
 from ..settings import SettingsResolver
-from ..application_handler import ApplicationHandler
-from ..disk_handler import DiskHandler
+from ..application_provider import ApplicationProvider
+from ..disk_provider import DiskProvider
 from ..validator_base import ValidatorBase
 
 class SettingsResolverTestCase(unittest.TestCase):
     def setUp(self):
         self.settings_file_path = "path/to/settings.json"
         self.settings = {
-            "application_handler": {
-                "default": "JPipe.application_handler.ApplicationHandler",
+            "application_provider": {
+                "default": "JPipe.application_provider.ApplicationProvider",
             },
-            "disk_handler": "JPipe.disk_handler.DiskHandler",
+            "disk_provider": "JPipe.disk_provider.DiskProvider",
             "validators": {
                 "default": [
                     "JPipe.validator_base.ValidatorBase",
@@ -44,7 +44,7 @@ class SettingsResolverTestCase(unittest.TestCase):
 
     def test_validate_with_missing_key(self):
         invalid_settings = self.settings.copy()
-        del invalid_settings["application_handler"]
+        del invalid_settings["application_provider"]
         with mock.patch(
             "builtins.open", mock.mock_open(read_data=json.dumps(invalid_settings))
         ) as mock_file:
@@ -56,28 +56,28 @@ class SettingsResolverTestCase(unittest.TestCase):
 
     def test_application_handler_returns_correct_class(self):
         self.resolver._settings = self.settings
-        result = self.resolver.application_handler
-        self.assertEqual(type(result), ApplicationHandler)
+        result = self.resolver.application_provider
+        self.assertEqual(type(result), ApplicationProvider)
 
     def test_application_handler_caches_class(self):
         self.resolver._settings = self.settings
         with mock.patch("JPipe.settings._get_class") as mock_get_class:
-            result1 = self.resolver.application_handler
-            result2 = self.resolver.application_handler
-            mock_get_class.assert_called_once_with(self.settings["application_handler"]["default"])
+            result1 = self.resolver.application_provider
+            result2 = self.resolver.application_provider
+            mock_get_class.assert_called_once_with(self.settings["application_provider"]["default"])
             self.assertEqual(result1, result2)
 
     def test_disk_handler_returns_correct_class(self):
         self.resolver._settings = self.settings
-        result = self.resolver.disk_handler
-        self.assertEqual(type(result), DiskHandler)
+        result = self.resolver.disk_provider
+        self.assertEqual(type(result), DiskProvider)
 
     def test_disk_handler_caches_class(self):
         self.resolver._settings = self.settings
         with mock.patch("JPipe.settings._get_class") as mock_get_class:
-            result1 = self.resolver.disk_handler
-            result2 = self.resolver.disk_handler
-            mock_get_class.assert_called_once_with(self.settings["disk_handler"])
+            result1 = self.resolver.disk_provider
+            result2 = self.resolver.disk_provider
+            mock_get_class.assert_called_once_with(self.settings["disk_provider"])
             self.assertEqual(result1, result2)
 
     def test_get_validators_returns_list_of_classes(self):

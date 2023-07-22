@@ -21,14 +21,14 @@ class SettingsResolver(base.JPipeBase):
         with open(self._settings_file_path, 'r') as f:
             self._settings = json.load(f)
 
-        self._application_handler = None
-        self._disk_handler = None
+        self._application_provider = None
+        self._disk_provider = None
 
     def validate(self):
         """Ensure we have the correct keys set on the settings obj."""
         required_keys = [
-            'application_handler',
-            'disk_handler',
+            'application_provider',
+            'disk_provider',
             'validators',
             'hooks',]
 
@@ -37,19 +37,19 @@ class SettingsResolver(base.JPipeBase):
                 raise KeyError(f"Settings file missing required key: {key}")
 
     @property
-    def application_handler(self):
+    def application_provider(self):
         """Returns the application handler class."""
-        if not self._application_handler:
-            self._application_handler = \
-                _get_class(self._settings['application_handler'][self._application])()
-        return self._application_handler
+        if not self._application_provider:
+            self._application_provider = \
+                _get_class(self._settings['application_provider'][self._application])()
+        return self._application_provider
 
     @property
-    def disk_handler(self):
+    def disk_provider(self):
         """Returns the disk handler class."""
-        if not self._disk_handler:
-            self._disk_handler = _get_class(self._settings['disk_handler'])()
-        return self._disk_handler
+        if not self._disk_provider:
+            self._disk_provider = _get_class(self._settings['disk_provider'])()
+        return self._disk_provider
 
     def get_validators(self):
         """
@@ -59,7 +59,7 @@ class SettingsResolver(base.JPipeBase):
         """
         validators = []
         for validator in self._settings['validators'].get(self._application, []):
-            validators.append(_get_class(validator)(self.application_handler, self.disk_handler))
+            validators.append(_get_class(validator)(self.application_provider, self.disk_provider))
         return validators
 
     def get_hooks(self):

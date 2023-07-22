@@ -1,6 +1,6 @@
 from JPipe.base import JPipeBase
 
-class ApplicationHandler(JPipeBase):
+class ApplicationProvider(JPipeBase):
 
     def get_all_referenced_files(self) -> list[str]:
         """

@@ -1,8 +1,8 @@
-from JPipe.application_handler import ApplicationHandler
+from JPipe.application_provider import ApplicationProvider
 import maya.cmds as cmds
 
 
-class MayaHandler(ApplicationHandler):
+class MayaProvider(ApplicationProvider):
 
     default_cameras = ["frontShape", "perspShape", "sideShape", "topShape"]
 

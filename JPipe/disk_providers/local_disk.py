@@ -1,8 +1,8 @@
-from ..disk_handler import DiskHandler
+from ..disk_provider import DiskProvider
 import os
 import tempfile
 
-class LocalDiskHandler(DiskHandler):
+class LocalDiskProvider(DiskProvider):
     """
     Handler for local disk operations.
     """

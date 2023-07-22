@@ -7,10 +7,16 @@ class CommandLineCheckin(CheckinController):
                  settings_file: str,
                  application: str,
                  scene_file_path: str,
+                 entity_type: str,
+                 entity_name: str,
+                 project_directory: str,
                  force=False):
         super().__init__(settings_file,application)
         self.force = force
         self.scene_file_path = scene_file_path
+        self.entity_type = entity_type
+        self.entity_name = entity_name
+        self.project_directory = project_directory
 
 
     def checkin(self):
@@ -23,7 +29,7 @@ class CommandLineCheckin(CheckinController):
         self.info(f"Starting checkin of {os.path.basename(self.scene_file_path)}...")
 
         try:
-            self.application_controller.open_scene(self.scene_file_path)
+            self.application_provider.open_scene(self.scene_file_path)
         except Exception as e:
             self.error(f"Failed to open scene {os.path.basename(self.scene_file_path)}.")
             self.error(str(e))
@@ -65,3 +71,10 @@ class CommandLineCheckin(CheckinController):
                 self.error(f"{validation.display_name} Validation failed: {message}")
 
         return success, failed
+
+    def execute_checkin(self):
+        """
+        Execute the checkin process that will create the needed locations and publish the files.
+        :return:
+        """
+        pass

@@ -1,8 +1,8 @@
 from typing import Optional, Tuple
 
 from .base import JPipeBase
-from .application_handler import ApplicationHandler
-from .disk_handler import DiskHandler
+from .application_provider import ApplicationProvider
+from .disk_provider import DiskProvider
 
 
 class ValidatorBase(JPipeBase):
@@ -11,10 +11,10 @@ class ValidatorBase(JPipeBase):
     """
     display_name = "ValidatorBase"
 
-    def __init__(self, application_handler: ApplicationHandler, disk_handler: DiskHandler):
+    def __init__(self, application_provider: ApplicationProvider, disk_provider: DiskProvider):
         super().__init__()
-        self.application_handler = application_handler
-        self.disk_handler = disk_handler
+        self.application_provider = application_provider
+        self.disk_provider = disk_provider
 
     def validate(self) -> Tuple[bool, Optional[str]]:
         """"""

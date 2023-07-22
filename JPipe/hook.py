@@ -9,8 +9,8 @@ class BaseHook(JPipe.base.JPipeBase):
     def __init__(self, checkin_controller: CheckinController):
         super().__init__()
         self.checkin_controller = checkin_controller
-        self.application_handler = self.checkin_controller.application_controller
-        self.disk_handler = self.checkin_controller.disk_handler
+        self.application_provider = self.checkin_controller.application_provider
+        self.disk_provider = self.checkin_controller.disk_provider
 
     def run(self):
         """Run the hook."""

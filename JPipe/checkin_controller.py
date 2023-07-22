@@ -11,8 +11,8 @@ class CheckinController(JPipeBase):
         self.settings = SettingsResolver(settings_file, application)
         self.application = application
 
-        self.application_controller = self.settings.application_handler
-        self.disk_handler = self.settings.disk_handler
+        self.application_provider = self.settings.application_provider
+        self.disk_provider = self.settings.disk_provider
 
         self.checkin_files = []
 
